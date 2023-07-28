@@ -159,7 +159,7 @@ enchant.errors.DefaultLanguageNotFoundError: en_US
     Package check "/usr/bin/rpmlint -f /tmp/abf/rpmbuild/OpenBoard.rpmlintrc /tmp/abf/rpmbuild/SRPMS/OpenBoard-1.6.4-2.src.rpm
 " failed.                                                                                                                     
 ```
-надо установить пакет aspell-en : `dnf install aspell-en`
+надо установить пакет aspell-en : `dnf install aspell-ru`
 
 Теперь красиво установим собранный пакет, более красиво, чем `sudo dnf install пакет.rpm`. Обычно такая красота излишня, но покажу для примера. После `abf rpmbuild` результаты сборки лежат прямо в текущем каталоге. Создадим в ней метаданные репозитория, запустив: `createrepo_c .`  
 Теперь запустим обновление системы с подключением этого репозитория:  
