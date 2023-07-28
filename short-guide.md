@@ -135,6 +135,32 @@ tar -xf rootfs-std-rosa2021.1_x86_64_2023-04-06.tar.xz
 
 Запускаем сборку: `abf rpmbuild`. Это примерно то же самое, что сначала выполнить `abf fetch` для скачивания прописанных в `.abf.yml` исходников с file-store, а затем `rpmbuild --define "_sourcedir $PWD" -bb *.spec` для сборки пакета. При первом запуске abf-клиент попросит задать параметры, можно просто везде нажать Enter, а затем поправить их в `~/.abfcfg` или просто удалить этот файл, чтобы он снова задал вопросы.
 
+Если возникнет следующая ошибка:
+
+```
+Traceback (most recent call last):                                                                                            
+  File "/usr/bin/rpmlint", line 380, in <module>                                                                              
+    main()                                                                                                                    
+  File "/usr/bin/rpmlint", line 172, in main                                                                                  
+    runChecks(pkg)                                                                                                            
+  File "/usr/bin/rpmlint", line 228, in runChecks                                                                             
+    check.check(pkg)                               
+File "/usr/share/rpmlint/TagsCheck.py", line 762, in check                                                                  
+    self.check_summary(pkg, lang, ignored_words)                                                                              
+  File "/usr/share/rpmlint/TagsCheck.py", line 983, in check_summary                                                          
+    spell_check(pkg, summary, 'Summary(%s)', lang, ignored_words)                                                             
+  File "/usr/share/rpmlint/TagsCheck.py", line 525, in spell_check                                                            
+    checker = enchant.checker.SpellChecker(           
+  File "/usr/lib/python3.8/site-packages/enchant/checker/__init__.py", line 140, in __init__                                  
+    raise DefaultLanguageNotFoundError(lang) from None                                                                        
+enchant.errors.DefaultLanguageNotFoundError: en_US                                                                            
+ошибка: Package check "/usr/bin/rpmlint -f /tmp/abf/rpmbuild/OpenBoard.rpmlintrc /tmp/abf/rpmbuild/SRPMS/OpenBoard-1.6.4-2.src
+.rpm" failed.                                                                                                                 
+    Package check "/usr/bin/rpmlint -f /tmp/abf/rpmbuild/OpenBoard.rpmlintrc /tmp/abf/rpmbuild/SRPMS/OpenBoard-1.6.4-2.src.rpm
+" failed.                                                                                                                     
+```
+надо установить пакет aspell-en : `dnf install aspell-ru`
+
 Теперь красиво установим собранный пакет, более красиво, чем `sudo dnf install пакет.rpm`. Обычно такая красота излишня, но покажу для примера. После `abf rpmbuild` результаты сборки лежат прямо в текущем каталоге. Создадим в ней метаданные репозитория, запустив: `createrepo_c .`  
 Теперь запустим обновление системы с подключением этого репозитория:  
 `sudo dnf --nogpgcheck --repofrompath x,$PWD upgrade`  
